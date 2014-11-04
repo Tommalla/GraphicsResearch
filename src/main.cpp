@@ -19,6 +19,7 @@ int main() {
 	sf::Texture texture, tile;
 	string textureFile = "../resources/Isometric/Walk/Tuscan_Walk_00000.png";
 	string tileFile = "../resources/Tiles/ts_beach0/straight/edited.png";
+	string fontFile = "../resources/fonts/Montserrat-Regular.ttf";
 	if (!texture.loadFromFile(textureFile)) {
 		fprintf(stderr, "Failed to load %s\n", textureFile.c_str());
 		return 1;
@@ -29,6 +30,18 @@ int main() {
 	}
 	texture.setSmooth(true);
 	tile.setSmooth(true);
+
+	sf::Font font;
+	if (!font.loadFromFile(fontFile)) {
+		fprintf(stderr, "Failed to load %s\n", fontFile.c_str());
+		return 1;
+	}
+
+	sf::Text fpsText;
+	fpsText.setFont(font);
+	fpsText.setCharacterSize(24);
+	fpsText.setColor(sf::Color::Red);
+	fpsText.setPosition(10, 10);
 
 	vector<GraphicalObject> objects;
 	//create tiles
@@ -54,6 +67,10 @@ int main() {
 		objects.push_back(obj);
 	}
 
+	sf::Clock clock;
+	float timeElapsed = 0.0f;
+	int frames = 0;
+
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -62,11 +79,24 @@ int main() {
 			}
 		}
 
+		float deltaTime = clock.getElapsedTime().asSeconds();
+		clock.restart();
+		
+		timeElapsed += deltaTime;
+		if (timeElapsed >= 1.0f) {
+			fpsText.setString(std::to_string(frames));
+			frames = 0;
+			timeElapsed = 0.0f;
+		}
+
 		window.clear();
-		for (const auto& obj: objects) {
+		for (auto& obj: objects) {
+			obj.update(deltaTime);
 			window.draw(obj.getDrawable());
 		}
+		window.draw(fpsText);
 		window.display();
+		++frames;
 	}
 
 	return 0;
