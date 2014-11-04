@@ -16,6 +16,8 @@ void GraphicalObject::setLogicalPosition(const sf::Vector2f& pos) {
 
 void GraphicalObject::setTexture(const sf::Texture& texture) {
 	sprite.setTexture(texture);
+	float scale = BASE_WIDTH / texture.getSize().x;
+	sprite.setScale(scale, scale);
 }
 
 void GraphicalObject::update(const float& deltaTime) {}
