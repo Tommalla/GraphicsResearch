@@ -1,5 +1,10 @@
 set(SOURCES
 	main.cpp
+	GraphicalObject.cpp
+)
+
+set(HEADERS
+	GraphicalObject.hpp
 )
 
 add_executable(main ${SOURCES})

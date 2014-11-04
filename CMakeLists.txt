@@ -13,3 +13,5 @@ include_directories(${SFML_INCLUDE_DIR})
 
 add_subdirectory(src)
 
+install(DIRECTORY resources DESTINATION "${GraphicsResearch_BINARY_DIR}")
+
