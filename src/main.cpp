@@ -14,24 +14,34 @@
 
 using std::shared_ptr;
 using std::string;
+using std::to_string;
 using std::vector;
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!");
 
-	sf::Texture texture, tile;
-	string textureFile = "../resources/Isometric/Walk/Tuscan_Walk_00000.png";
+	sf::Texture tile;
+	vector<vector<sf::Texture>> knightFrames;
+	string textureFilePrefix = "../resources/Isometric/Walk/Tuscan_Walk_";
 	string tileFile = "../resources/Tiles/ts_beach0/straight/edited.png";
 	string fontFile = "../resources/fonts/Montserrat-Regular.ttf";
-	if (!texture.loadFromFile(textureFile)) {
-		fprintf(stderr, "Failed to load %s\n", textureFile.c_str());
-		return 1;
+	for (int dir = 0; dir < 8; ++dir) {
+		knightFrames.push_back({});
+		for (int id = 0; id <= 14; ++id) {
+			sf::Texture texture;
+			string filename = textureFilePrefix + to_string(100000 + 10000 * dir + id).substr(1, 5) + ".png";
+			if (!texture.loadFromFile(filename)) {
+				fprintf(stderr, "Failed to load %s\n", filename.c_str());
+				return 1;
+			}
+			texture.setSmooth(true);
+			knightFrames.back().push_back(texture);
+		}
 	}
 	if (!tile.loadFromFile(tileFile)) {
 		fprintf(stderr, "Failed to load %s\n", tileFile.c_str());
 		return 1;
 	}
-	texture.setSmooth(true);
 	tile.setSmooth(true);
 
 	sf::Font font;
@@ -64,8 +74,7 @@ int main() {
 	}
 
 	{
-		shared_ptr<GraphicalObject> p{new AnimatedCharacter()};
-		p->setTexture(texture);
+		shared_ptr<GraphicalObject> p{new AnimatedCharacter(knightFrames)};
 		p->setLogicalPosition(sf::Vector2f(2, 3));
 		objects.push_back(p);
 	}

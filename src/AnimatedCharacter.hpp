@@ -9,15 +9,20 @@
 
 class AnimatedCharacter: public GraphicalObject {
 public:
-	AnimatedCharacter();
+	AnimatedCharacter(const std::vector<std::vector<sf::Texture>>& frames);
 	virtual void update(const float& deltaTime) override;
 	void setVelocity(const sf::Vector2f& v);
 
 private:
+	/**
+	 * @brief Updates the texture of the object depending on it's current
+	 * velocity vector and time elapsed.
+	 */
+	void updateTexture();
+
 	std::vector<std::vector<sf::Texture>> frames;
-	int direction;
 	int frame;
-	const float frameDelay = 0.5;
+	float frameDelay;
 	float currentDelay;
 	sf::Vector2f velocity;
 };
