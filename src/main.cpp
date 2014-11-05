@@ -2,14 +2,17 @@
  * GraphicsResearch main
  */
 #include <cstdio>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include <SFML/Graphics.hpp>
 
 #include "common.hpp"
+#include "AnimatedCharacter.hpp"
 #include "GraphicalObject.hpp"
 
+using std::shared_ptr;
 using std::string;
 using std::vector;
 
@@ -43,7 +46,7 @@ int main() {
 	fpsText.setColor(sf::Color::Red);
 	fpsText.setPosition(10, 10);
 
-	vector<GraphicalObject> objects;
+	vector<shared_ptr<GraphicalObject>> objects;
 	//create tiles
 	int xtiles = WIDTH / BASE_WIDTH;
 	int ytiles = 2 * (HEIGHT - (BASE_HEIGHT / 2.0f)) / BASE_HEIGHT;
@@ -52,19 +55,19 @@ int main() {
 		float offset = y % 2 ? 0.5f : 0.0f;
 		int numOffset = offset ? 1 : 0;
 		for (int x = 0; x < xtiles - numOffset; ++x) {
-			GraphicalObject obj;
-			obj.setTexture(tile);
-			obj.setLogicalPosition(sf::Vector2f(x + offset, y - offset - sumYOffset));
-			objects.push_back(obj);
+			shared_ptr<GraphicalObject> p{new GraphicalObject()};
+			p->setTexture(tile);
+			p->setLogicalPosition(sf::Vector2f(x + offset, y - offset - sumYOffset));
+			objects.push_back(p);
 		}
 		sumYOffset += offset ? 1.0f : 0.0f;
 	}
 
 	{
-		GraphicalObject obj;
-		obj.setTexture(texture);
-		obj.setLogicalPosition(sf::Vector2f(2, 3));
-		objects.push_back(obj);
+		shared_ptr<GraphicalObject> p{new AnimatedCharacter()};
+		p->setTexture(texture);
+		p->setLogicalPosition(sf::Vector2f(2, 3));
+		objects.push_back(p);
 	}
 
 	sf::Clock clock;
@@ -81,7 +84,7 @@ int main() {
 
 		float deltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
-		
+
 		timeElapsed += deltaTime;
 		if (timeElapsed >= 1.0f) {
 			fpsText.setString(std::to_string(frames));
@@ -91,8 +94,8 @@ int main() {
 
 		window.clear();
 		for (auto& obj: objects) {
-			obj.update(deltaTime);
-			window.draw(obj.getDrawable());
+			obj->update(deltaTime);
+			window.draw(obj->getDrawable());
 		}
 		window.draw(fpsText);
 		window.display();

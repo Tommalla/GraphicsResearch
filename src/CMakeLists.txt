@@ -1,9 +1,11 @@
 set(SOURCES
+	AnimatedCharacter.cpp
 	main.cpp
 	GraphicalObject.cpp
 )
 
 set(HEADERS
+	AnimatedCharacter.hpp
 	GraphicalObject.hpp
 )
 

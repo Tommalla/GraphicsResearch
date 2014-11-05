@@ -12,7 +12,7 @@ public:
 	void setTexture(const sf::Texture& texture);
 	void setLogicalPosition(const sf::Vector2f& pos);
 
-private:
+protected:
 	sf::Sprite sprite;
 	sf::Vector2f position;
 };
