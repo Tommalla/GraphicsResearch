@@ -6,8 +6,9 @@
 
 using std::random_device;
 using std::uniform_real_distribution;
+using std::shared_ptr;
 
-AnimatedCharacter::AnimatedCharacter(const std::vector< std::vector< sf::Texture > >& frames)
+AnimatedCharacter::AnimatedCharacter(const shared_ptr<std::vector< std::vector< sf::Texture > >>& frames)
 : frames{frames}, frame{0}, currentFrameDelay{frameDelay}, currentTurnDelay{0}, velocity{0, 0}, gen{random_device{}()}, dis{-3.0f, 3.0f} {
 	updateTexture();
 	setVelocity({dis(gen), dis(gen)});
@@ -68,8 +69,8 @@ void AnimatedCharacter::updateTexture() {
 		currentFrameDelay -= frameDelay;
 		if (fabs(velocity.x) > EPS || fabs(velocity.y) > EPS) {
 			frame++;
-			frame %= frames[direction].size();
-			setTexture(frames[direction][frame]);
+			frame %= (*frames)[direction].size();
+			setTexture((*frames)[direction][frame]);
 		}
 	}
 }

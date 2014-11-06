@@ -73,8 +73,10 @@ int main() {
 		sumYOffset += offset ? 1.0f : 0.0f;
 	}
 
-	for (int i = 0; i < 20; ++i) {
-		shared_ptr<GraphicalObject> p{new AnimatedCharacter(knightFrames)};
+	shared_ptr<vector<vector<sf::Texture>>> frames_ptr{new vector<vector<sf::Texture>>{knightFrames}};
+
+	for (int i = 0; i < 3000; ++i) {
+		shared_ptr<GraphicalObject> p{new AnimatedCharacter(frames_ptr)};
 		objects.push_back(p);
 	}
 

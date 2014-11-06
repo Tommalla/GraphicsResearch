@@ -3,6 +3,7 @@
  */
 #ifndef ANIMATED_CHARACTER_HPP
 #define ANIMATED_CHARACTER_HPP
+#include <memory>
 #include <random>
 #include <vector>
 
@@ -10,7 +11,7 @@
 
 class AnimatedCharacter: public GraphicalObject {
 public:
-	AnimatedCharacter(const std::vector<std::vector<sf::Texture>>& frames);
+	AnimatedCharacter(const std::shared_ptr< std::vector< std::vector< sf::Texture > > >& frames);
 	void setTurnDelay(const float& turnDelay);
 	virtual void update(const float& deltaTime) override;
 	void setVelocity(const sf::Vector2f& v);
@@ -22,7 +23,7 @@ private:
 	 */
 	void updateTexture();
 
-	std::vector<std::vector<sf::Texture>> frames;
+	std::shared_ptr<std::vector<std::vector<sf::Texture>>> frames;
 	int frame;
 	float frameDelay;
 	float currentFrameDelay;
