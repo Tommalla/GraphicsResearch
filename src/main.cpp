@@ -75,7 +75,7 @@ int main() {
 
 	shared_ptr<vector<vector<sf::Texture>>> frames_ptr{new vector<vector<sf::Texture>>{knightFrames}};
 
-	for (int i = 0; i < 200; ++i) {
+	for (int i = 0; i < 500; ++i) {
 		shared_ptr<GraphicalObject> p{new AnimatedCharacter(frames_ptr)};
 		objects.push_back(p);
 	}
@@ -105,7 +105,9 @@ int main() {
 		window.clear();
 		for (auto& obj: objects) {
 			obj->update(deltaTime);
-			window.draw(obj->getDrawable());
+			for (auto drawable: obj->getDrawable()) {
+				window.draw(*drawable);
+			}
 		}
 		window.draw(fpsText);
 		window.display();

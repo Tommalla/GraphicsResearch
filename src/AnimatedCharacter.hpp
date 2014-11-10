@@ -12,6 +12,7 @@
 class AnimatedCharacter: public GraphicalObject {
 public:
 	AnimatedCharacter(const std::shared_ptr< std::vector< std::vector< sf::Texture > > >& frames);
+	virtual std::vector< const sf::Drawable* > getDrawable() const;
 	void setTurnDelay(const float& turnDelay);
 	virtual void update(const float& deltaTime) override;
 	void setVelocity(const sf::Vector2f& v);
@@ -34,5 +35,6 @@ private:
 	sf::Vector2f velocity;
 	std::mt19937 gen;
 	std::uniform_real_distribution<float> dis;
+	sf::CircleShape circle;
 };
 #endif

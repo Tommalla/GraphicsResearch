@@ -1,9 +1,17 @@
+#include <vector>
+
 #include "GraphicalObject.hpp"
 
 #include "common.hpp"
 
-const sf::Drawable& GraphicalObject::getDrawable() const {
-	return sprite;
+using std::vector;
+
+GraphicalObject::GraphicalObject() {
+	entities.push_back(&sprite);
+}
+
+std::vector< const sf::Drawable* > GraphicalObject::getDrawable() const {
+	return vector<const sf::Drawable*>{&sprite};
 }
 
 void GraphicalObject::setLogicalPosition(const sf::Vector2f& pos) {
@@ -11,7 +19,9 @@ void GraphicalObject::setLogicalPosition(const sf::Vector2f& pos) {
 	float realx, realy;
 	realx = pos.x * BASE_WIDTH;
 	realy = pos.y * BASE_HEIGHT;
-	sprite.setPosition(sf::Vector2f(realx, realy));
+	for (auto& entity: entities) {
+		entity->setPosition(sf::Vector2f(realx, realy));
+	}
 }
 
 void GraphicalObject::setTexture(const sf::Texture& texture) {

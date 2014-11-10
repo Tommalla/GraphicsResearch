@@ -1,21 +1,28 @@
 /* Tomasz [Tommalla] Zakrzewski, 2014
  * AnimatedCharacter class implementation.
  */
+#include <vector>
+
 #include "AnimatedCharacter.hpp"
 #include "common.hpp"
 
 using std::random_device;
-using std::uniform_real_distribution;
 using std::shared_ptr;
+using std::uniform_real_distribution;
+using std::vector;
 
 AnimatedCharacter::AnimatedCharacter(const shared_ptr<std::vector< std::vector< sf::Texture > >>& frames)
-: frames{frames}, frame{0}, currentFrameDelay{frameDelay}, currentTurnDelay{0}, velocity{0, 0}, gen{random_device{}()}, dis{-3.0f, 3.0f} {
+: GraphicalObject{}, frames{frames}, frame{0}, currentFrameDelay{0.0f}, currentTurnDelay{0}, velocity{0, 0}
+, gen{random_device{}()}, dis{-3.0f, 3.0f}, circle{10} {
+	entities.push_back(&circle);
 	updateTexture();
 	setVelocity({dis(gen), dis(gen)});
 	setTurnDelay(fabs(dis(gen)));
 	uniform_real_distribution<float> distX(3, WIDTH / BASE_WIDTH - 3);
 	uniform_real_distribution<float> distY(3, HEIGHT / BASE_HEIGHT - 3);
 	setLogicalPosition({distX(gen), distY(gen)});
+	auto circlePos = circle.getPosition();
+	circle.setPosition(circlePos.x + 21.0f, circlePos.y + 46.0f);
 
 	const float radPart = 2 * PI / 8.0f;	// the part of the circle per one direction
 	float currentAngleRad = 0.0f;
@@ -23,6 +30,12 @@ AnimatedCharacter::AnimatedCharacter(const shared_ptr<std::vector< std::vector< 
 		sines[i] = sin(2 * PI - currentAngleRad);
 		cosines[i] = cos(2 * PI - currentAngleRad);
 	}
+
+	circle.setFillColor(sf::Color::Green);
+}
+
+std::vector< const sf::Drawable* > AnimatedCharacter::getDrawable() const {
+	return {&circle, &sprite};
 }
 
 void AnimatedCharacter::setTurnDelay(const float& turnDelay) {
@@ -51,6 +64,7 @@ void AnimatedCharacter::update(const float& deltaTime) {
 		setVelocity(-velocity);	//turn back if you can't walk anymore
 	}
 	sprite.move(velocity);
+	circle.move(velocity);
 }
 
 void AnimatedCharacter::setVelocity(const sf::Vector2f& v) {
