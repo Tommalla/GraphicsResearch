@@ -16,6 +16,13 @@ AnimatedCharacter::AnimatedCharacter(const shared_ptr<std::vector< std::vector< 
 	uniform_real_distribution<float> distX(3, WIDTH / BASE_WIDTH - 3);
 	uniform_real_distribution<float> distY(3, HEIGHT / BASE_HEIGHT - 3);
 	setLogicalPosition({distX(gen), distY(gen)});
+
+	const float radPart = 2 * PI / 8.0f;	// the part of the circle per one direction
+	float currentAngleRad = 0.0f;
+	for (int i = 0; i < 8; ++i, currentAngleRad += radPart) {
+		sines[i] = sin(2 * PI - currentAngleRad);
+		cosines[i] = cos(2 * PI - currentAngleRad);
+	}
 }
 
 void AnimatedCharacter::setTurnDelay(const float& turnDelay) {
@@ -58,11 +65,19 @@ void AnimatedCharacter::updateTexture() {
 	// 5 x 1
 	// 6 7 0
 	// Bear in mind that SFML's coordinates are inverted, so e.g.: vector (1, 1) corresponds to direction 0.
-	int direction;
-	if (velocity.y >= 0.0f) {
+	int direction = 0;
+	float cp = velocity.y - velocity.x;	// cross product of vectors (1, 1) and (x, y) is y - x
+	float dp = velocity.x + velocity.y;	// dot product of the same vectors
+	float ab = sqrt(2.0f) * length(velocity);	// |(1, 1)| * |(x, y)|
+	float sinVal = cp / ab;	// the value of the sin of the angle between vectors a and b is: cross product / (length a * length b)
+	float cosVal = dp / ab;
 
+	// we have the sin of the angle, now we need to find the closest direction
+	for (int i = 0; i < 8; ++i) {
+		if (fabs(sinVal - sines[i]) + fabs(cosVal - cosines[i]) <= fabs(sinVal - sines[direction]) + fabs(cosVal - cosines[direction])) {
+			direction = i;
+		}
 	}
-	direction = 0;
 
 	// update frame number if necessary
 	if (currentFrameDelay >= frameDelay) {

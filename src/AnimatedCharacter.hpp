@@ -29,6 +29,8 @@ private:
 	float currentFrameDelay;
 	float turnDelay;
 	float currentTurnDelay;
+	float sines[8];
+	float cosines[8];
 	sf::Vector2f velocity;
 	std::mt19937 gen;
 	std::uniform_real_distribution<float> dis;
