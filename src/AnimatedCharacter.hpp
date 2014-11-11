@@ -30,6 +30,8 @@ private:
 	float currentFrameDelay;
 	float turnDelay;
 	float currentTurnDelay;
+	float moveDelay;
+	float currentMoveDelay;
 	float sines[8];
 	float cosines[8];
 	sf::Vector2f velocity;

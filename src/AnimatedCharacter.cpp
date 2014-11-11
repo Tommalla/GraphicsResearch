@@ -12,8 +12,8 @@ using std::uniform_real_distribution;
 using std::vector;
 
 AnimatedCharacter::AnimatedCharacter(const shared_ptr<std::vector< std::vector< sf::Texture > >>& frames)
-: GraphicalObject{}, frames{frames}, frame{0}, currentFrameDelay{0.0f}, currentTurnDelay{0}, velocity{0, 0}
-, gen{random_device{}()}, dis{-3.0f, 3.0f}, circle{10} {
+: GraphicalObject{}, frames{frames}, frame{0}, currentFrameDelay{0.0f}, currentTurnDelay{0}, moveDelay{0.02}
+, currentMoveDelay{0.0f}, velocity{0, 0}, gen{random_device{}()}, dis{-3.0f, 3.0f}, circle{10} {
 	entities.push_back(&circle);
 	updateTexture();
 	setVelocity({dis(gen), dis(gen)});
@@ -63,8 +63,13 @@ void AnimatedCharacter::update(const float& deltaTime) {
 	if (xend >= WIDTH || xbegin <= 0 || yend >= HEIGHT || ybegin <= 0) {
 		setVelocity(-velocity);	//turn back if you can't walk anymore
 	}
-	sprite.move(velocity);
-	circle.move(velocity);
+
+	currentMoveDelay += deltaTime;
+	if (currentMoveDelay >= moveDelay) {
+		currentMoveDelay -= moveDelay;
+		sprite.move(velocity);
+		circle.move(velocity);
+	}
 }
 
 void AnimatedCharacter::setVelocity(const sf::Vector2f& v) {
