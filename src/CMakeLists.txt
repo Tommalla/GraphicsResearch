@@ -1,3 +1,5 @@
+add_subdirectory(SFML)
+
 set(SOURCES
 	AnimatedCharacter.cpp
 	main.cpp
@@ -10,4 +12,4 @@ set(HEADERS
 )
 
 add_executable(main ${SOURCES})
-target_link_libraries(main ${SFML_LIBRARIES})
+target_link_libraries(main ${Qt5Widgets_LIBRARIES} ${SFML_LIBRARIES} SFMLGraphics)
