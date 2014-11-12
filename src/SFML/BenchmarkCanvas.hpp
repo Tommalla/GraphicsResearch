@@ -23,7 +23,10 @@ protected:
 	float timeElapsed;
 	int frames;
 	sf::Text fpsText;
+	sf::Font font;
 	std::vector<std::shared_ptr<GraphicalObject>> objects;
+	sf::Texture tile;
+	std::vector<std::vector<sf::Texture>> knightFrames;
 };
 
 #endif	// BENCHMARK_CANVAS_HPP

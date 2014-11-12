@@ -26,11 +26,11 @@ int main(int argc, char **argv) {
 	// Create the main frame
 	QFrame* MainFrame = new QFrame;
 	MainFrame->setWindowTitle("Qt SFML");
-	MainFrame->resize(800, 600);
+	MainFrame->resize(900, 700);
 	MainFrame->show();
 
 	// Create a SFML view inside the main frame
-	BenchmarkCanvas* SFMLView = new BenchmarkCanvas(MainFrame, QPoint(20, 20), QSize(760, 560));
+	BenchmarkCanvas* SFMLView = new BenchmarkCanvas(MainFrame, QPoint(20, 20), QSize(800, 600));
 	SFMLView->show();
 
 	return App.exec();

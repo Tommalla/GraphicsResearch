@@ -19,8 +19,6 @@ using std::to_string;
 using std::vector;
 
 void BenchmarkCanvas::OnInit() {
-	sf::Texture tile;
-	vector<vector<sf::Texture>> knightFrames;
 	string textureFilePrefix = "../resources/Isometric/Walk/Tuscan_Walk_";
 	string tileFile = "../resources/Tiles/ts_beach0/straight/edited.png";
 	string fontFile = "../resources/fonts/Montserrat-Regular.ttf";
@@ -41,7 +39,6 @@ void BenchmarkCanvas::OnInit() {
 	}
 	tile.setSmooth(true);
 
-	sf::Font font;
 	if (!font.loadFromFile(fontFile)) {
 		throw runtime_error("Failed to load " + fontFile);
 	}
@@ -88,7 +85,7 @@ void BenchmarkCanvas::OnUpdate() {
 	clock.restart();
 	timeElapsed += deltaTime;
 	if (timeElapsed >= 1.0f) {
-// 		fpsText.setString(std::to_string(frames));
+		fpsText.setString(std::to_string(frames));
 		frames = 0;
 		timeElapsed = 0.0f;
 	}
@@ -99,7 +96,7 @@ void BenchmarkCanvas::OnUpdate() {
 			draw(*drawable);
 		}
 	}
-// 	draw(fpsText);
+	draw(fpsText);
 	display();
 	++frames;
 }
