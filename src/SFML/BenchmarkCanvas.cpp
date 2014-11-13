@@ -67,7 +67,7 @@ void BenchmarkCanvas::OnInit() {
 
 	shared_ptr<vector<vector<sf::Texture>>> frames_ptr{new vector<vector<sf::Texture>>{knightFrames}};
 
-	for (int i = 0; i < 500; ++i) {
+	for (int i = 0; i < 1000; ++i) {
 		shared_ptr<GraphicalObject> p{new AnimatedCharacter(frames_ptr)};
 		objects.push_back(p);
 	}
@@ -77,7 +77,7 @@ void BenchmarkCanvas::OnInit() {
 }
 
 void BenchmarkCanvas::OnUpdate() {
-// 	QSFMLCanvas::OnUpdate();
+	QSFMLCanvas::OnUpdate();
 	// move all the drawing logic here
 	clear(sf::Color::Black);
 
@@ -97,6 +97,5 @@ void BenchmarkCanvas::OnUpdate() {
 		}
 	}
 	draw(fpsText);
-	display();
 	++frames;
 }

@@ -14,7 +14,7 @@ public:
 
 protected:
 	virtual void OnInit() = 0;
-	virtual void OnUpdate() = 0;
+	virtual void OnUpdate() {};
 	virtual QPaintEngine* paintEngine() const;
 	virtual void showEvent(QShowEvent*);
 	virtual void paintEvent(QPaintEvent*);
