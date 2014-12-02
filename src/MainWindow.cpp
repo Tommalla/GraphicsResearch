@@ -30,6 +30,8 @@ MainWindow::MainWindow()
 	button->move(475, 10);
 	button->setText("Ok");
 	button->show();
+
+	connect(button, SIGNAL(clicked()), this, SLOT(changeScene()));
 }
 
 

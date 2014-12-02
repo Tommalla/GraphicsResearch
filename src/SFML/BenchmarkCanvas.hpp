@@ -8,6 +8,7 @@
 
 #include "QSFMLCanvas.hpp"
 #include "../GraphicalObject.hpp"
+#include "../AnimatedCharacter.hpp"
 
 
 class BenchmarkCanvas : public QSFMLCanvas {
@@ -15,7 +16,7 @@ Q_OBJECT;
 public:
 	BenchmarkCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size)
 			: QSFMLCanvas{Parent, Position, Size}{}
-	void setCharactersNumber(const int& number);
+	void setCharactersNumber(const int number);
 
 protected:
 	virtual void OnInit();
@@ -27,8 +28,14 @@ protected:
 	sf::Text fpsText;
 	sf::Font font;
 	std::vector<std::shared_ptr<GraphicalObject>> objects;
+	std::vector<std::shared_ptr<AnimatedCharacter>> dynamicObjects;
 	sf::Texture tile;
 	std::vector<std::vector<sf::Texture>> knightFrames;
+	std::shared_ptr<std::vector<std::vector<sf::Texture>>> frames_ptr;
+
+private:
+	void addCharacters(int number);
+	void removeCharacters(int number);
 };
 
 #endif	// BENCHMARK_CANVAS_HPP

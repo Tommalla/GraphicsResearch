@@ -68,12 +68,9 @@ void BenchmarkCanvas::OnInit() {
 		sumYOffset += offset ? 1.0f : 0.0f;
 	}
 
-	shared_ptr<vector<vector<sf::Texture>>> frames_ptr{new vector<vector<sf::Texture>>{knightFrames}};
+	frames_ptr = shared_ptr<vector<vector<sf::Texture>>>{new vector<vector<sf::Texture>>{knightFrames}};
 
-	for (int i = 0; i < 200; ++i) {
-		shared_ptr<GraphicalObject> p{new AnimatedCharacter(frames_ptr)};
-		objects.push_back(p);
-	}
+	addCharacters(200);
 
 	timeElapsed = 0.0f;
 	frames = 0;
@@ -82,7 +79,7 @@ void BenchmarkCanvas::OnInit() {
 
 void BenchmarkCanvas::OnUpdate() {
 	QSFMLCanvas::OnUpdate();
-	// move all the drawing logic here
+	// the drawing logic
 	clear(sf::Color::Black);
 
 	float deltaTime = clock.getElapsedTime().asSeconds();
@@ -100,11 +97,40 @@ void BenchmarkCanvas::OnUpdate() {
 			draw(*drawable);
 		}
 	}
+
+	for (auto& obj: dynamicObjects) {
+		obj->update(deltaTime);
+		for (auto drawable: obj->getDrawable()) {
+			draw(*drawable);
+		}
+	}
+
 	draw(fpsText);
 	++frames;
 }
 
 
-void BenchmarkCanvas::setCharactersNumber(const int& number) {
-	// TODO
+void BenchmarkCanvas::setCharactersNumber(const int number) {
+	int size = static_cast<int>(dynamicObjects.size());
+	if (number > size) {
+		addCharacters(number - size);
+	} else if (number < size) {
+		removeCharacters(size - number);
+	}
+}
+
+
+void BenchmarkCanvas::addCharacters(int number)
+{
+	while(number--) {
+		shared_ptr<AnimatedCharacter> p{new AnimatedCharacter(frames_ptr)};
+		dynamicObjects.push_back(p);
+	}
+}
+
+void BenchmarkCanvas::removeCharacters(int number)
+{
+	while(number--) {
+		dynamicObjects.pop_back();
+	}
 }
