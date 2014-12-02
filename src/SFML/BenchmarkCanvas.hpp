@@ -13,7 +13,9 @@
 class BenchmarkCanvas : public QSFMLCanvas {
 Q_OBJECT;
 public:
-	BenchmarkCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size): QSFMLCanvas{Parent, Position, Size} {}
+	BenchmarkCanvas(QWidget* Parent, const QPoint& Position, const QSize& Size)
+			: QSFMLCanvas{Parent, Position, Size}{}
+	void setCharactersNumber(const int& number);
 
 protected:
 	virtual void OnInit();

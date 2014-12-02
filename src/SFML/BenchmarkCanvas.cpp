@@ -9,14 +9,17 @@
 #include <string>
 #include <vector>
 
+
 #include "../AnimatedCharacter.hpp"
 #include "../common.hpp"
+
 
 using std::runtime_error;
 using std::shared_ptr;
 using std::string;
 using std::to_string;
 using std::vector;
+
 
 void BenchmarkCanvas::OnInit() {
 	string textureFilePrefix = "../resources/Isometric/Walk/Tuscan_Walk_";
@@ -76,6 +79,7 @@ void BenchmarkCanvas::OnInit() {
 	frames = 0;
 }
 
+
 void BenchmarkCanvas::OnUpdate() {
 	QSFMLCanvas::OnUpdate();
 	// move all the drawing logic here
@@ -98,4 +102,9 @@ void BenchmarkCanvas::OnUpdate() {
 	}
 	draw(fpsText);
 	++frames;
+}
+
+
+void BenchmarkCanvas::setCharactersNumber(const int& number) {
+	// TODO
 }
