@@ -67,7 +67,7 @@ void BenchmarkCanvas::OnInit() {
 
 	shared_ptr<vector<vector<sf::Texture>>> frames_ptr{new vector<vector<sf::Texture>>{knightFrames}};
 
-	for (int i = 0; i < 1000; ++i) {
+	for (int i = 0; i < 200; ++i) {
 		shared_ptr<GraphicalObject> p{new AnimatedCharacter(frames_ptr)};
 		objects.push_back(p);
 	}
